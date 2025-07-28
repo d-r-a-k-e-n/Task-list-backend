@@ -68,7 +68,7 @@ MONGODB_URI=your_mongodb_atlas_link
     ```bash
     npm start
     ```
-2.  The API will be running on `http://localhost:3001` by default.
+2.  The API will be running on `https://task-list-backend-1.onrender.com` by default.
 
 ---
 

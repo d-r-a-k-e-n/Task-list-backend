@@ -2,36 +2,21 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const Task = require("./models/Task");
 
 require("./config/db.js");
+const authRoutes = require("./routes/auth.routes");
+const taskRoutes = require("./routes/task.routes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/tasks", async (req, res) => {
-  try {
-    const tasks = await Task.find();
-    res.json(tasks);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error on Server" });
-  }
-});
+app.use("/auth", authRoutes);
+app.use("/tasks", taskRoutes);
 
-app.post("/tasks/:userId", async (req, res) => {
-  try {
-    const { user_id } = req.params;
-    const { title } = req.body;
-    const newTask = new Task({ title });
-    await newTask.save();
-    res.status(201).json(newTask);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error on Server" });
-  }
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 app.put("/tasks/:id", async (req, res) => {
